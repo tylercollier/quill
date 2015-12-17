@@ -18,7 +18,7 @@ class LinkTooltip extends Tooltip {
       if (range == null || !range.isCollapsed()) return;
       let anchor = this._findAnchor(range);
       if (anchor != null) {
-        this.setMode(anchor.href, false);
+        this.setMode(anchor.getAttribute('href'), false);
         this.show(anchor);
       } else if (this.container.style.left != Tooltip.HIDE_MARGIN) {
         this.hide();
@@ -29,7 +29,7 @@ class LinkTooltip extends Tooltip {
       this.removeLink(this.quill.getSelection());
     });
     this.container.querySelector('.change').addEventListener('click', () => {
-      this.setMode(this.link.href, true);
+      this.setMode(_this.link.getAttribute('href'), true);
     });
     this.initTextbox(this.textbox, this.saveLink, this.hide);
     this.quill.onModuleLoad('toolbar', (toolbar) => {
@@ -54,7 +54,7 @@ class LinkTooltip extends Tooltip {
   }
 
   saveLink() {
-    let url = this._normalizeURL(this.textbox.value);
+    let url = this.textbox.value;
     let range = this.quill.getSelection(true);
     if (range != null) {
       if (range.isCollapsed()) {
@@ -80,7 +80,7 @@ class LinkTooltip extends Tooltip {
       }, 0);
     } else {
       this.link.href = url;
-      let url = this.link.href;
+      let url = this.link.getAttribute('href');
       let text = url.length > this.options.maxLength ? url.slice(0, this.options.maxLength) + '...' : url;
       this.link.textContent = text;
     }
@@ -107,13 +107,6 @@ class LinkTooltip extends Tooltip {
     return null;
   }
 
-  _normalizeURL(url) {
-    if (!/^(https?:\/\/|mailto:)/.test(url)) {
-      url = 'http://' + url;
-    }
-    return url;
-  };
-
   _onKeyboard() {
     let range = this.quill.getSelection();
     this._toggle(range, !this._findAnchor(range));
@@ -128,16 +121,11 @@ class LinkTooltip extends Tooltip {
     if (!value) {
       this.removeLink(range);
     } else if (!range.isCollapsed()) {
-      this.setMode(this._suggestURL(range), true);
+      this.setMode(this.quill.getText(range), true);
       nativeRange = this.quill.editor.selection._getNativeRange();
       this.show(nativeRange);
     }
   }
-
-  _suggestURL(range) {
-    let text = this.quill.getText(range);
-    return this._normalizeURL(text);
-  };
 }
 LinkTooltip.DEFAULTS = {
   maxLength: 50,
