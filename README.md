@@ -1,3 +1,5 @@
+**Note: This branch and README is intended for the upcoming 1.0 release which has made many changes to the development toolchain. Some instructions here may be out of date or become out of date as development on 1.0 progresses.**
+
 # [Quill Rich Text Editor](http://quilljs.com/) [![Build Status](https://travis-ci.org/quilljs/quill.svg?branch=master)](http://travis-ci.org/quilljs/quill)
 
 [![Test Status](https://saucelabs.com/browser-matrix/quill-master.svg)](https://saucelabs.com/u/quill)
@@ -51,34 +53,39 @@ There are a number of ways to download the latest or versioned copy of Quill.
 
 ## Local Development
 
-Quill's source is in [Coffeescript](http://coffeescript.org/) and utilizes [Browserify](http://browserify.org/) to organize its files.
+Quill's source is in [ES6](http://www.ecma-international.org/ecma-262/6.0/index.html) and utilizes [Webpack](https://webpack.github.io/) to organize its files.
 
 ### Installation
 
-    npm install -g grunt-cli
+    npm install -g gulp
     npm install
 
 ### Building
 
-    grunt dist - compile and browserify
-    grunt server - starts a local server that will build and serve assets on the fly
+    gulp build - compiles quill and examples into .build/
+    gulp server - starts a local server that will build and serve assets on the fly
+    gulp dev - same as `gulp server` and also starts the test server proxied through /karma
 
 ### Examples
 
-With the local server (`grunt server`) running you can try out some minimal examples on:
+With the local server (`gulp server`) running you can try out some minimal examples on:
 
 - [localhost:9000/examples/index.html](http://localhost:9000/examples/index.html)
 - [localhost:9000/examples/advanced.html](http://localhost:9000/examples/advanced.html)
 
 Quill [releases](https://github.com/quilljs/quill/releases) also contain these examples as built static files you can try without needing to run the local development server.
 
+With the dev server (`gulp dev`) you can also run the unit tests with your browser:
+
+- [localhost:9000/karma/debug.html](localhost:9000/karma/debug.html)
+
 ### Testing
 
-    grunt test:unit - runs javascript test suite with Chrome
-    grunt test:e2e - runs end to end tests with Webdriver + Chrome
-    grunt test:coverage - run tests measuring coverage with Chrome
+    gulp test:unit - runs javascript test suite with Chrome
+    gulp test:e2e - runs end to end tests with Webdriver + Chrome
+    gulp test:coverage - run tests measuring coverage with Chrome
 
-Tests are run by [Karma](http://karma-runner.github.io/) and [Protractor](https://github.com/angular/protractor) using [Jasmine](http://jasmine.github.io/). Check out `Gruntfile.coffee` and `config/grunt/` for more testing options.
+Tests are run by [Karma](http://karma-runner.github.io/) and [Protractor](https://github.com/angular/protractor) using [Jasmine](http://jasmine.github.io/). Check out `gulpfile.js` and `config/test.js` for more testing options.
 
 
 ## Contributing
